@@ -1,7 +1,8 @@
 # Task Manager
+## Team Members
 
-Fawn Sannar <10725695@uvu.edu>
-Trey Bailey <>
+- Fawn Sannar <10725695@uvu.edu>
+- Trey Bailey <11015545@uvu.edu>
 
 The instructions state:
 
