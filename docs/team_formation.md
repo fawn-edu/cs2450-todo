@@ -6,6 +6,8 @@ Our team has been marked for dissolution after Milestone 1 due to team members d
 
 - Fawn Sannar: meeting recorder, developer, tester
 - Trey Bailey: scrum master, developer, tester
+- Zaq Holdsworth: designer, developer, and UX research (ideas, subject to group approval)
+
 
 ## Communication plan
 
