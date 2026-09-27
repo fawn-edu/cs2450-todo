@@ -4,6 +4,7 @@
 
 - Fawn Sannar <10725695@uvu.edu>
 - Trey Bailey <11015545@uvu.edu>
+- Zaq Holdsworth <10946519@uvu.edu>
 
 ## Notes
 
