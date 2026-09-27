@@ -3,3 +3,5 @@
 ![MS Teams correspondence, part 1](week1a.png)
 
 ![MS Teams correspondence, part 2](week1b.png)
+
+![MS Teams correspondence, part 3](week1c.png)
