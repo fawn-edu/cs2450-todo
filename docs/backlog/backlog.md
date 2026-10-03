@@ -10,9 +10,11 @@
 - **Save Tasks Between Visits:** As a user, I want my list to survive a browser reload so I do not lose my work.
 - **Filter Tasks by Status and Priority:** As a user, I want to narrow my list so I can focus on relevant work.
 - **Sort Tasks:** As a user, I want tasks ordered by deadline or importance so I can plan efficiently.
-
 - **Responsive UI:** As a user, I want to be able to use the web application through either a desktop browser or a mobile browser, with comparable user experience.
 - **Set Task Tags:** As a user, I want to add arbitrary tags to tasks so I can categorize them.
 - **Filter Tasks by Tags:** As a user, I want to filter tags so I can focus on one category at a time, or so I can exclude a category, so that I can focus on relevant work.
 - **Set Task Description:** As a user, I want to add extended descriptions to tasks using markdown formatting so that I can organize my thoughts related to any single task.
 - **Search Tasks:** As a user, I want to search my tasks, taking into account task title, priority, tag, completion status, and task description (e.g. `status:complete -priority:low (tag:grocery | tag:shopping)` retrieves all completed tasks any priority except low with either the "grocery" or "shopping" tags).
+- **Recurring Tasks:** As a shopper, I want some tasks to automatically reappear after a specified amount of time.
+- **Set Task Duration:** As a student, I want tasks to have a attribute "time estimate" to automatically push tasks up when they take longer to complete.
+- **Set Task Dependencies:** As a user, I want to link tasks together with relationships like after/before.
