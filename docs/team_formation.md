@@ -11,4 +11,4 @@ Our team has been marked for dissolution after Milestone 1 due to team members d
 
 ## Communication plan
 
-Our original communication plan was to meet over Microsoft Teams on Tuesdays from 11:30–13:00. However, our team is unable to actually meet and will soon cease to exist. Our communication plan is to adhere to whatever our future teams' communication plan is as we will be soon reassigned.
+Our original communication plan was to meet over Microsoft Teams on Tuesdays from 11:30–13:00. However, our team is unable to actually meet, so we will asynchronously communicate over Microsoft Teams text chat as our individual availability permits. Our communication plan is to adhere to whatever our future teams' communication plan is as we will be soon reassigned.
