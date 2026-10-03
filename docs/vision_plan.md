@@ -7,6 +7,7 @@ The initial version will let users create, view, edit, delete, complete, and reo
 Our timeline is as such:
 
 - Week 1: Deliver Milestone 1, which involves setting up the repository, organizing user stories, and assigning roles
-- Week 2: Abandon it all as we are reassigned to our new teams for future milestones, adopting their planned timelines
+- Week 2: Deliver v1.0, which will clarify and finalize project documentation
+- Week 3: Abandon it all as we are reassigned to our new teams for future milestones, adopting their planned timelines
 
 Risks mainly include the grader finding the honesty of this timeline unamusing.
