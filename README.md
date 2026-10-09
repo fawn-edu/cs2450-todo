@@ -3,6 +3,7 @@
 ## Team Members
 
 - Fawn Sannar <10725695@uvu.edu>
+- Ethan Scott <11021379@uvu.edu>
 
 Former team members:
 
