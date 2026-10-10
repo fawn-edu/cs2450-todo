@@ -1,5 +1,6 @@
 #include <cassert>
 #include <format>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <print>
@@ -11,8 +12,14 @@ static void print_usage() {
 }
 
 int main(int argc, const char **argv) {
-	std::vector<task> tasks{}; // TODO #16: Load tasks from file (todo.txt?)
-	
+	std::vector<task> tasks{}; // TODO #16: Load tasks from file; requires task::parse()
+	// std::ifstream itodo{"todo.txt", std::ios::in};
+	// if (!itodo.is_open()) {
+	// 	std::println(std::cerr, "Could not open todo.txt for reading.");
+	// 	return 1;
+	// }
+	// for (std::string line; getline(itodo, line);) tasks.emplace_back(task::parse(line));
+
 	assert(argc > 1); // TODO: Print usage if not enough args
 	std::string_view cmd{argv[1]};
 	cmd.remove_prefix(std::min(cmd.find_first_not_of(" -/"), cmd.size()));
@@ -63,8 +70,12 @@ int main(int argc, const char **argv) {
 		print_usage();
 	}
 
-	// TODO #16: Save tasks to file instead of stdout
-	std::ostream_iterator<char> f{std::cout};
-	for (const auto &task : tasks) std::format_to(f, "{}\n", task);
+	// Save tasks to todo.txt
+	std::ofstream otodo{"todo.txt", std::ios::out | std::ios::trunc};
+	if (!otodo.is_open()) {
+		std::println(std::cerr, "Could not open todo.txt for writing.");
+		return 1;
+	}
+	for (const auto &task : tasks) std::println(otodo, "{}\n", task);
 	return 0;
 }
