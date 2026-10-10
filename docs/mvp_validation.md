@@ -21,8 +21,8 @@ Command:
 .\main.exe list
 
 Result:
-[Incomplete] Homework
-[Completed] CS 2450 Assignment
+[] Homework
+[x] CS 2450 Assignment
 
 Status: PASS
 

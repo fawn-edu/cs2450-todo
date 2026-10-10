@@ -12,21 +12,21 @@ static void print_usage() {
 
 int main(int argc, const char **argv) {
 	std::vector<task> tasks{}; // TODO #16: Load tasks from file (todo.txt?)
-
+	
 	assert(argc > 1); // TODO: Print usage if not enough args
 	std::string_view cmd{argv[1]};
 	cmd.remove_prefix(std::min(cmd.find_first_not_of(" -/"), cmd.size()));
 
 	if (cmd == "list" || cmd == "l") {
-    if (tasks.empty()) {
-        std::println("No tasks found. Create a task with the 'create' command.");
-    } else {
-        for (const auto &t : tasks) {
-            std::println("[{}] {}",
-                t.completed.has_value() ? "Completed" : "Incomplete",
-                t.name);
-        }
-    }
+	if (tasks.empty()) {
+		std::println("No tasks found. Create a task with the 'create' command.");
+	} else {
+		for (const auto &t : tasks) {
+			std::println("[{}] {}",
+				t.completed.has_value() ? "x" : " ",
+				t.name);
+		}
+	}
 } else if (cmd == "create" || cmd == "c") {
 		// TODO: Reject duplicate task names for now
 		assert(std::strlen(argv[2]) > 0); // TODO: Print usage if name empty
