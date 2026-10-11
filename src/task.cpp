@@ -1,60 +1,43 @@
-#include <stdexcept>
+// Clang doesn't have <spanstream> yet >:(
+// https://github.com/llvm/llvm-project/issues/105145
+// As a result, we have to create an owning std::string copy of a
+// std::string_view just to parse the date inside it. This is stupid
+// and evil. Clang pls
 #include <sstream>
+#include <stdexcept>
 #include <string>
-#include <iomanip>
 #include "task.hpp"
 
-static std::chrono::sys_seconds parse_date(const std:: string& s) {
-    std::istringstream iss(s);
-    std::chrono::sys_time<std::chrono::seconds> tp;
-    iss >> std::chrono::parse("%F", tp); // %F in this case is YYYY-MM-DD if we want a different date format, let me know
+using std::string_view, std::operator""sv;
 
-    if (iss.fail()) {
-        throw std::invalid_argument("Invalid date" + s);
-    }
-    return tp;
-}
+task task::parse(string_view serialized) {
+	task t{};
+	if (serialized.contains("\r\n")) throw std::invalid_argument{"contains illegal line breaks"};
 
-task task::parse(std::string_view serialized) {
-    std::string s(serialized);
-    std::istringstream iss(s);
+	if (serialized.starts_with("x "sv)) {
+		serialized.remove_prefix("x "sv.size());
+		const auto end = serialized.find_first_of(' ');
+		if (end == string_view::npos) throw std::invalid_argument{"malformed completed date"};
+		const auto raw = serialized.substr(0, end);
+		std::chrono::sys_seconds tm;
+		// XXX: EVIL EVIL EVIL!!!!
+		// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", tm);
+		std::string raw_and_evil{raw};
+		std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%TZ%Z", tm);
+		t.completed.emplace(tm);
+		serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
+	}
 
-    task t;
-    std::string token;
+	const auto end = serialized.find_first_of(' ');
+	if (end == string_view::npos) throw std::invalid_argument{"malformed created date"};
+	const auto raw = serialized.substr(0, end);
+	// XXX: agony
+	// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", t.created);
+	std::string raw_and_evil{raw};
+	std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%TZ%Z", t.created);
+	serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
 
-    iss >> token;
-    if (token == "x") {
-        // If the task is completed
-        std::string completed_date_str;
-        std::string created_date_str;
-
-        if (!(iss >> completed_date_str)) {
-            throw std::invalid_argument("Missing completed date");
-        }
-        if (!(iss >> created_date_str)) {
-            throw std::invalid_argument("Missing created date");
-        }
-        t.completed = parse_date(completed_date_str);
-        t.created = parse_date(created_date_str);
-    }
-    else {
-        // If it's not completed, makes the first token the created date
-        t.completed = std::nullopt;
-        t.created = parse_date(token);
-    }
-
-    // This will make everything beyond the date the task name
-    std::string name;
-    std::getline(iss, name);
-
-    if (name.empty()) {
-        throw std::invalid_argument("Missing a task name");
-    }
-
-    // Getting rid of the space that comes before the date
-    if (!name.empty() && name.front() == ' ') {
-        name.erase(0,1);
-    }
-    t.name = name;
-    return t;
+	if (serialized.empty()) throw std::invalid_argument{"empty name"};
+	t.name = std::string{serialized};
+	return t;
 }

@@ -36,7 +36,7 @@ struct std::formatter<task> {
 
 	/// @brief Formats a @ref task
 	static auto format(const task& t, std::format_context& ctx)  {
-		const auto completed_date = t.completed.has_value()
+		const auto completed_date = t.completed
 			? std::format("x {:%FT%TZ%Z} ", t.completed.value())
 			: "";
 		return std::format_to(ctx.out(), "{}{:%FT%TZ%Z} {}",
