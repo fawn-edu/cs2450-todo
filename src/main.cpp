@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iterator>
 #include <print>
+#include <string_view>
 #include <vector>
 #include "task.hpp"
 
@@ -48,15 +49,55 @@ int main(int argc, const char **argv) {
 		// default values of the new task are just the values of the
 		// task being edited instead
 	} else if (cmd == "complete" || cmd == "x") {
-		assert(false); // TODO #4
-		// Should expect a task name fragment in argv[2]
-		// Exit with error if the name fragment is ambiguous
-		// Set that task's completed to std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now())
+		assert(argc > 2);
+
+		std::string_view fragment{argv[2]};
+		task *match = nullptr;
+
+		for (auto &t : tasks) {
+			if (t.name.find(fragment) != std::string::npos) {
+				if (match != nullptr) {
+					std::println("Task name is ambiguous: {}", fragment);
+					return 1;
+
+				}
+				match = &t;
+			}
+		}
+
+		if (match == nullptr) {
+			std::println("Task not found: {}", fragment);
+			return 1;
+		}
+
+		match->completed =
+			std::chrono::floor<std::chrono::seconds>(
+				std::chrono::system_clock::now()
+			);
+
 	} else if (cmd == "reopen" || cmd == "o") {
-		assert(false); // TODO #4
-		// Should expect a task name fragment in argv[2]
-		// Exit with error if the name fragment is ambiguous
-		// Set that task's completed to nullopt
+		assert(argc > 2);
+
+		std::string_view fragment{argv[2]};
+		task *match = nullptr;
+
+		for (auto &t : tasks) {
+			if (t.name.find(fragment) != std::string::npos) {
+				if (match != nullptr) {
+					std::println("Task name is ambiguous: {}", fragment);
+					return 1;
+				}
+				match = &t;
+			}
+		}
+
+		if (match == nullptr) {
+			std::println("Task not found: {}", fragment);
+			return 1;
+		}
+
+		match->completed = std::nullopt;
+
 	} else if (cmd == "delete") { // No shorthand, intentionally
 		assert(false); // TODO #5
 		// Should expect a task name fragment in argv[2]
