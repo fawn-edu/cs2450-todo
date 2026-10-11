@@ -72,14 +72,14 @@ This SRS documents the MVP's requirements and boundaries for **Milestone 2**. Mo
 | Delete task     | User selects a task for deletion.           | The task is deleted.                                   |
 
 #### Use Case Diagram
-![[usecasediagram.png]]
+![UseCaseDiagram](./uml/usecasediagram.png)
 #### Conceptual Model 
 
 This is the task struct used in our MVP. We will store multiple tasks using `std::vector<task>` and serialize them to a text file. 
-![[taskstruct.png]]
+![Task Struct](./uml/taskstruct.png)
 
 This is a model representing *main.cpp* and shows how the program will process commands from the CLI 
-![[programbehavior.png]]
+![Program Behavior](./uml/programbehavior.png)
 
 ## 7. Assumptions & Constraints
 
