@@ -111,7 +111,6 @@ int main(int argc, const char **argv) {
 		}
 		match->completed = std::nullopt;
 	} else if (cmd == "delete") { // No shorthand, intentionally
-		assert(false); // TODO #5
 		if (argc < 3) {
 			std::println(std::cerr, "{} requires task name", argv[1]);
 			return 1;

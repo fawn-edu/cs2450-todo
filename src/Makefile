@@ -11,6 +11,8 @@ test: todo.out
 	./todo.out reopen "1"
 	./todo.out create "Test task 2"
 	./todo.out complete "2"
+	./todo.out create "Test task 3"
+	./todo.out delete "3"
 	./todo.out list
 todo.out: main.cpp task.cpp task.hpp
 	$(CXX) $(CXXFLAGS) -o $@ main.cpp task.cpp

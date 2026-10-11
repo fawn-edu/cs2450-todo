@@ -103,3 +103,21 @@ Actual Result:
 `Task not found: Biology`
 
 Status: PASS
+
+
+## A bunch of other stuff
+
+```
+$ make CXX="clang++" test
+clang++ -std=c++23 -O2 -Wall -Wextra -pedantic -o todo.out main.cpp task.cpp
+./todo.out create "Test task 1"
+./todo.out complete "1"
+./todo.out reopen "1"
+./todo.out create "Test task 2"
+./todo.out complete "2"
+./todo.out create "Test task 3"
+./todo.out delete "3"
+./todo.out list
+[ ] Test task 1
+[x] Test task 2
+```
