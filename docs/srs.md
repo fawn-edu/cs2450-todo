@@ -33,7 +33,6 @@ This SRS documents the MVP's requirements and boundaries for **Milestone 2**. Mo
 | --------- | --------------------------------------------------------------------------------- | -------------------------- |
 | 1         | As a busy user, I want to capture a task so I can remember work I need to do.     | Create Tasks Functionality |
 | 2         | As a user, I want to see my tasks together so I can plan my work.                 | View Task List             |
-| 3         | As a user, I want to correct task details so my list stays accurate.              | Edit Tasks                 |
 | 4         | As a user, I want to mark work complete and reopen it so progress stays accurate. | Complete and Reopen Tasks  |
 | 5         | As a user, I want to remove unwanted tasks so my list stays useful.               | Delete Tasks Safely        |
 | 8         | As a user, I want to save tasks so my list persists after closing                 | Save Tasks Between Visits  |
@@ -44,7 +43,6 @@ This SRS documents the MVP's requirements and boundaries for **Milestone 2**. Mo
 | ------------- | ---------------------------------------------------------------------------------------------------- |
 | 1             | The application should allow users to create a task with a title.                                    |
 | 2             | The application should display saved tasks and indicate whether each is complete or incomplete.      |
-| 3             | The application should allow users to edit an existing task's title.                                 |
 | 4             | The application should allow users to mark tasks complete and reopen completed tasks.                |
 | 5             | The application should allow users to delete a selected task.                                        |
 | 8             | The application shall save task changes to a plain-text file and reload them in a later program run. |
@@ -70,7 +68,6 @@ This SRS documents the MVP's requirements and boundaries for **Milestone 2**. Mo
 | --------------- | ------------------------------------------- | ------------------------------------------------------ |
 | Create task     | User enters a new task title.               | The task is saved and appears in the list.             |
 | View tasks      | User requests the task list.                | Saved tasks and their completion status are displayed. |
-| Edit task       | User selects a task and changes its title.  | The updated task is saved.                             |
 | Complete/reopen | User selects a task and changes its status. | The new status is saved.                               |
 | Delete task     | User selects a task for deletion.           | The task is deleted.                                   |
 
