@@ -2,14 +2,13 @@
 
 ### Test 1 - Empty Task List
 
-Command:  
+Command:
 `.\main.exe list`
 
-Result:  
+Result:
 `No tasks found. Create a task with the 'create' command.`
 
 Status: PASS
-
 
 ### Test 2 - Task List with Tasks
 
@@ -21,9 +20,9 @@ Command:
 `.\main.exe list`
 
 Result:
-```text
-[Incomplete] Homework
-[Completed] CS 2450 Assignment
+```
+[ ] Homework
+[x] CS 2450 Assignment
 ```
 
 Status: PASS
@@ -41,7 +40,6 @@ tasks.emplace_back(task{
 });
 ```
 
-
 ## Issue #4 - Complete and Reopen Tasks
 
 ### Test Setup
@@ -56,55 +54,52 @@ The temporary tasks were removed after testing.
 
 ### Test 1 - Ambiguous Task Name
 
-Command:  
+Command:
 `.\main.exe complete Homework`
 
-Expected Result:  
+Expected Result:
 The program should show an error because more than one task matches "Homework".
 
-Actual Result:  
+Actual Result:
 `Task name is ambiguous: Homework`
 
 Status: PASS
 
-
 ### Test 2 - Complete a Task
 
-Command:  
+Command:
 `.\main.exe complete CS2450`
 
-Expected Result:  
+Expected Result:
 CS2450 Homework should be marked as completed.
 
-Actual Result:  
+Actual Result:
 CS2450 Homework was marked as completed with an `x` and completion time.
 
 Status: PASS
 
-
 ### Test 3 - Reopen a Task
 
-Command:  
+Command:
 `.\main.exe reopen "Completed Assignment"`
 
-Expected Result:  
+Expected Result:
 Completed Assignment should be changed back to incomplete.
 
-Actual Result:  
+Actual Result:
 Completed Assignment was changed back to incomplete.
 
 Status: PASS
 
-
 ### Test 4 - Task Not Found
 
-Command:  
+Command:
 `.\main.exe complete Biology`
 
-Expected Result:  
+Expected Result:
 The program should show an error because there is no matching task.
 
-Actual Result:  
+Actual Result:
 `Task not found: Biology`
 
 Status: PASS
