@@ -23,6 +23,9 @@ struct task {
 	/// @details This is set to `nullopt` by default, indicating the
 	/// task is not yet complete.
 	std::optional<std::chrono::sys_seconds> completed = std::nullopt;
+
+	/// @brief The task's priority
+	std::optional<char> priority = std::nullopt;
 };
 
 template<>
@@ -36,12 +39,16 @@ struct std::formatter<task> {
 
 	/// @brief Formats a @ref task
 	static auto format(const task& t, std::format_context& ctx)  {
-		const auto completed_date = t.completed
+		const auto completed_date = t.completed.has_value()
 			? std::format("x {:%FT%TZ%Z} ", t.completed.value())
 			: "";
-		return std::format_to(ctx.out(), "{}{:%FT%TZ%Z} {}",
+		const auto priority = t.priority.has_value()
+			? std::format(" ({})", t.priority.value())
+			: "";
+		return std::format_to(ctx.out(), "{}{:%FT%TZ%Z}{} {}",
 			completed_date,
 			t.created,
+			priority,
 			t.name
 		);
 	}

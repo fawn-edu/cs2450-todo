@@ -1,3 +1,4 @@
+#include <cctype>
 // Clang doesn't have <spanstream> yet >:(
 // https://github.com/llvm/llvm-project/issues/105145
 // As a result, we have to create an owning std::string copy of a
@@ -28,14 +29,24 @@ task task::parse(string_view serialized) {
 		serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
 	}
 
-	const auto end = serialized.find_first_of(' ');
+	auto end = serialized.find_first_of(' ');
 	if (end == string_view::npos) throw std::invalid_argument{"malformed created date"};
-	const auto raw = serialized.substr(0, end);
+	auto raw = serialized.substr(0, end);
 	// XXX: agony
 	// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", t.created);
 	std::string raw_and_evil{raw};
 	std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%TZ%Z", t.created);
 	serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
+
+	if (serialized.starts_with('(')) {
+		end = serialized.find_first_of(' ');
+		if (end == string_view::npos) throw std::invalid_argument{"malformed priority"};
+		raw = serialized.substr(0, end);
+		const char priority = raw[1]; // Inside parentheses
+		if ('z' < priority || priority < 'A') throw std::invalid_argument{"priority must be alphabetic"};
+		t.priority = std::toupper(priority);
+		serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
+	}
 
 	if (serialized.empty()) throw std::invalid_argument{"empty name"};
 	t.name = std::string{serialized};

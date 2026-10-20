@@ -47,8 +47,12 @@ int main(int argc, const char **argv) {
 
 	if (cmd == "list" || cmd == "l") {
 		for (const auto &t : tasks) {
-			std::println("[{}] {}",
+			const auto priority = t.priority
+				? std::format("({}) ", t.priority.value())
+				: "";
+			std::println("[{}] {}{}",
 				t.completed ? 'x' : ' ',
+				priority,
 				t.name
 			);
 		}
@@ -57,9 +61,26 @@ int main(int argc, const char **argv) {
 			std::println(std::cerr, "{} requires task name", argv[1]);
 			return 1;
 		}
-		// TODO: This will need actual parsing logic once tasks hold
-		// more user-defined content than just a name
-		tasks.emplace_back(task{.name = argv[2]});
+		// TODO: Factor this out into a "lite" parse function that does
+		// not expect dates, have the full parse function call into that
+		// same function once dates are parsed
+		auto input = std::string_view{argv[2]};
+		std::optional<char> priority = std::nullopt;
+		if (input.starts_with('(')) {
+			const auto end = input.find_first_of(' ');
+			if (end == std::string_view::npos) {
+				std::println(std::cerr, "Task beginning with parentheses expects priority");
+				return 1;
+			}
+			const auto raw = input.substr(0, end);
+			priority = raw.at(1); // Inside parentheses
+			if ('z' < priority || priority < 'A') {
+				std::println(std::cerr, "Task priority must be alphabetic");
+				return 1;
+			}
+			input.remove_prefix(end + 1); // +1 for trailing space immediately after end
+		}
+		tasks.emplace_back(task{.name = std::string{input}, .priority = priority});
 	// } else if (cmd == "edit" || cmd == "e") { // TODO #3
 		// Should expect a task name fragment in argv[2]
 		// Exit with error if the name fragment is ambiguous
