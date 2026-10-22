@@ -11,6 +11,22 @@
 
 using std::string_view, std::operator""sv;
 
+task &task::edit(string_view serialized) {
+	if (serialized.contains("\r\n")) throw std::invalid_argument{"contains illegal line breaks"};
+	if (serialized.starts_with('(')) {
+		auto end = serialized.find_first_of(' ');
+		if (end == string_view::npos) end = serialized.size() - 1;
+		auto raw = serialized.substr(0, end);
+		const char c = raw[1]; // Inside parentheses
+		if ('z' < c || c < 'A') throw std::invalid_argument{"priority must be alphabetic"};
+		priority.emplace(std::toupper(c));
+		serialized.remove_prefix(std::min(end + 1, serialized.size())); // +1 for trailing space immediately after end
+	}
+	// TODO: Strip leading & trailing whitespace before checking if empty
+	if (!serialized.empty()) name = std::string{serialized};
+	return *this;
+}
+
 task task::parse(string_view serialized) {
 	task t{};
 	if (serialized.contains("\r\n")) throw std::invalid_argument{"contains illegal line breaks"};
@@ -24,7 +40,7 @@ task task::parse(string_view serialized) {
 		// XXX: EVIL EVIL EVIL!!!!
 		// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", tm);
 		std::string raw_and_evil{raw};
-		std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%TZ%Z", tm);
+		std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%T%z", tm);
 		t.completed.emplace(tm);
 		serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
 	}
@@ -35,20 +51,10 @@ task task::parse(string_view serialized) {
 	// XXX: agony
 	// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", t.created);
 	std::string raw_and_evil{raw};
-	std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%TZ%Z", t.created);
+	std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%T%z", t.created);
 	serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
 
-	if (serialized.starts_with('(')) {
-		end = serialized.find_first_of(' ');
-		if (end == string_view::npos) throw std::invalid_argument{"malformed priority"};
-		raw = serialized.substr(0, end);
-		const char priority = raw[1]; // Inside parentheses
-		if ('z' < priority || priority < 'A') throw std::invalid_argument{"priority must be alphabetic"};
-		t.priority = std::toupper(priority);
-		serialized.remove_prefix(end + 1); // +1 for trailing space immediately after end
-	}
-
-	if (serialized.empty()) throw std::invalid_argument{"empty name"};
-	t.name = std::string{serialized};
+	t.edit(serialized); // priority & name
+	if (t.name.empty()) throw std::invalid_argument{"empty name"};
 	return t;
 }

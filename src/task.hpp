@@ -12,6 +12,13 @@ struct task {
 	/// @see https://github.com/todotxt/todo.txt#todotxt-format-rules
 	static task parse(std::string_view serialized);
 
+	/// @brief Edits a task with values parsed from a `string_view`
+	/// @details This function only parses information that might be
+	/// changed during editing, such as task priority and name.
+	/// @throws std::invalid_argument if @p serialized contains a
+	/// malformed priority or contains an empty task name
+	task &edit(std::string_view serialized);
+
 	/// @brief The task's description
 	std::string name;
 
@@ -40,12 +47,12 @@ struct std::formatter<task> {
 	/// @brief Formats a @ref task
 	static auto format(const task& t, std::format_context& ctx)  {
 		const auto completed_date = t.completed.has_value()
-			? std::format("x {:%FT%TZ%Z} ", t.completed.value())
+			? std::format("x {:%FT%T%z} ", t.completed.value())
 			: "";
 		const auto priority = t.priority.has_value()
 			? std::format(" ({})", t.priority.value())
 			: "";
-		return std::format_to(ctx.out(), "{}{:%FT%TZ%Z}{} {}",
+		return std::format_to(ctx.out(), "{}{:%FT%T%z}{} {}",
 			completed_date,
 			t.created,
 			priority,

@@ -81,12 +81,28 @@ int main(int argc, const char **argv) {
 			input.remove_prefix(end + 1); // +1 for trailing space immediately after end
 		}
 		tasks.emplace_back(task{.name = std::string{input}, .priority = priority});
-	// } else if (cmd == "edit" || cmd == "e") { // TODO #3
-		// Should expect a task name fragment in argv[2]
-		// Exit with error if the name fragment is ambiguous
-		// This should behave just like creating a new task, but the
-		// default values of the new task are just the values of the
-		// task being edited instead
+	} else if (cmd == "edit" || cmd == "e") {
+		if (argc < 4) {
+			std::println(std::cerr, "{} requires task name and edits", argv[1]);
+			return 1;
+		}
+
+		task *match = nullptr;
+		for (auto &t : tasks) {
+			if (!t.name.contains(argv[2])) continue;
+			if (match) {
+				std::println(std::cerr, "\"{}\" is ambiguous", argv[2]);
+				return 1;
+			}
+			match = &t;
+		}
+
+		if (!match) {
+			std::println(std::cerr, "\"{}\" does not match any tasks", argv[2]);
+			return 1;
+		}
+
+		match->edit(argv[3]);
 	} else if (cmd == "complete" || cmd == "x") {
 		if (argc < 3) {
 			std::println(std::cerr, "{} requires task name", argv[1]);

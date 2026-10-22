@@ -110,13 +110,15 @@ Status: PASS
 ```
 $ make test
 clang++ -std=c++23 -O2 -Wall -Wextra -pedantic -o todo.out main.cpp task.cpp
-./todo.out create "(A) Test task 1"
+./todo.out create "(d) Test task 1"
 ./todo.out complete "1"
 ./todo.out reopen "1"
-./todo.out create "(B) Test task 2"
+./todo.out create "(b) testt task  2"
 ./todo.out complete "2"
 ./todo.out create "(c) Test task 3"
 ./todo.out delete "3"
+./todo.out edit "1" "(a)"
+./todo.out edit "2" "Test task 2"
 ./todo.out list
 [ ] (A) Test task 1
 [x] (B) Test task 2
