@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <compare>
 #include <string>
 #include <optional>
 
@@ -16,8 +17,23 @@ struct task {
 	/// @details This function only parses information that might be
 	/// changed during editing, such as task priority and name.
 	/// @throws std::invalid_argument if @p serialized contains a
-	/// malformed priority or contains an empty task name
+	/// line breaks or a malformed priority
 	task &edit(std::string_view serialized);
+
+	/// @brief Orders two tasks based on contents
+	/// @details Orders tasks using the following criteria:
+	/// - An incomplete task is ordered before an incomplete task.
+	/// - Two complete tasks are ordered by their completed dates.
+	/// - A task with no priority is ordered after a task with one.
+	/// - Two tasks with priorities are ordered by their priorities.
+	/// - If none of the above apply, tasks are ordered by their created
+	///   dates.
+	/// - If none of the above apply and tasks have identical created
+	///   dates, they are unordered.
+	// TODO: Need test demonstrating this works as intended
+	friend std::partial_ordering operator<=>(const task &l, const task &r);
+
+	friend bool operator==(const task &l, const task &r) = default;
 
 	/// @brief The task's description
 	std::string name;
@@ -46,16 +62,18 @@ struct std::formatter<task> {
 
 	/// @brief Formats a @ref task
 	static auto format(const task& t, std::format_context& ctx)  {
+		const auto *const is_completed = t.completed.has_value() ? "x " : "";
 		const auto completed_date = t.completed.has_value()
-			? std::format("x {:%FT%T%z} ", t.completed.value())
+			? std::format("{:%FT%T%z} ", t.completed.value())
 			: "";
 		const auto priority = t.priority.has_value()
-			? std::format(" ({})", t.priority.value())
+			? std::format("({}) ", t.priority.value())
 			: "";
-		return std::format_to(ctx.out(), "{}{:%FT%T%z}{} {}",
+		return std::format_to(ctx.out(), "{}{}{}{:%FT%T%z} {}",
+			is_completed,
+			priority,
 			completed_date,
 			t.created,
-			priority,
 			t.name
 		);
 	}

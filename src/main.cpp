@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <format>
 #include <fstream>
@@ -14,9 +15,10 @@ static void print_usage(const char *argv0) {
 		"\t{} create NAME      Create a new task named NAME\n"
 		"\t{} complete NAME    Mark task named NAME as complete\n"
 		"\t{} reopen NAME      Mark task named NAME as incomplete\n"
+		"\t{} edit NAME EDIT   Modify task named NAME with EDIT\n"
 		"\t{} delete NAME      Delete task named NAME\n"
 		"\t{} help             Show program usage\n",
-		argv0, argv0, argv0, argv0, argv0, argv0
+		argv0, argv0, argv0, argv0, argv0, argv0, argv0
 	);
 }
 
@@ -61,26 +63,14 @@ int main(int argc, const char **argv) {
 			std::println(std::cerr, "{} requires task name", argv[1]);
 			return 1;
 		}
-		// TODO: Factor this out into a "lite" parse function that does
-		// not expect dates, have the full parse function call into that
-		// same function once dates are parsed
-		auto input = std::string_view{argv[2]};
-		std::optional<char> priority = std::nullopt;
-		if (input.starts_with('(')) {
-			const auto end = input.find_first_of(' ');
-			if (end == std::string_view::npos) {
-				std::println(std::cerr, "Task beginning with parentheses expects priority");
-				return 1;
-			}
-			const auto raw = input.substr(0, end);
-			priority = raw.at(1); // Inside parentheses
-			if ('z' < priority || priority < 'A') {
-				std::println(std::cerr, "Task priority must be alphabetic");
-				return 1;
-			}
-			input.remove_prefix(end + 1); // +1 for trailing space immediately after end
+		try {
+			auto t = task{}.edit(argv[2]);
+			if (t.name.empty()) throw std::invalid_argument{"empty name"};
+			tasks.emplace_back(t);
+		} catch (std::invalid_argument &e) {
+			std::println(std::cerr, "syntax error in task: {}", e.what());
+			return 1;
 		}
-		tasks.emplace_back(task{.name = std::string{input}, .priority = priority});
 	} else if (cmd == "edit" || cmd == "e") {
 		if (argc < 4) {
 			std::println(std::cerr, "{} requires task name and edits", argv[1]);
@@ -102,7 +92,12 @@ int main(int argc, const char **argv) {
 			return 1;
 		}
 
-		match->edit(argv[3]);
+		try {
+			match->edit(argv[3]);
+		} catch (std::invalid_argument &e) {
+			std::println(std::cerr, "syntax error in edit: {}", e.what());
+			return 1;
+		}
 	} else if (cmd == "complete" || cmd == "x") {
 		if (argc < 3) {
 			std::println(std::cerr, "{} requires task name", argv[1]);
@@ -178,8 +173,7 @@ int main(int argc, const char **argv) {
 	}
 
 	// Save tasks to todo.txt
-	// TODO: Sort tasks by created date, then sort completed tasks to
-	// bottom
+	std::ranges::sort(tasks);
 	std::ofstream otodo{"todo.txt", std::ios::out | std::ios::trunc};
 	if (!otodo.is_open()) {
 		std::println(std::cerr, "could not open todo.txt for writing");

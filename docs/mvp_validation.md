@@ -105,11 +105,12 @@ Actual Result:
 Status: PASS
 
 
-## A bunch of other stuff
+## CLI operation
 
 ```
 $ make test
 clang++ -std=c++23 -O2 -Wall -Wextra -pedantic -o todo.out main.cpp task.cpp
+rm -f todo.txt
 ./todo.out create "(d) Test task 1"
 ./todo.out complete "1"
 ./todo.out reopen "1"
@@ -122,4 +123,49 @@ clang++ -std=c++23 -O2 -Wall -Wextra -pedantic -o todo.out main.cpp task.cpp
 ./todo.out list
 [ ] (A) Test task 1
 [x] (B) Test task 2
+```
+
+## Tasks are sorted correctly
+
+- Completed tasks appear after incomplete tasks and are sorted in the order they were completed
+- Incomplete tasks are sorted by priority, with no priority being ordered after all other priorities, then sorted by created date
+
+```
+$ make test-sort
+clang++ -std=c++23 -O2 -Wall -Wextra -pedantic -o todo.out main.cpp task.cpp
+rm -f todo.txt
+./todo.out create "No priority, incomplete 1"
+./todo.out create "No priority, complete 1"
+./todo.out create "(A) A priority, incomplete 1"
+./todo.out create "(A) A priority, complete 1"
+./todo.out create "(B) B priority, incomplete 1"
+./todo.out create "(B) B priority, complete 1"
+sleep 1s
+./todo.out create "No priority, incomplete 2"
+./todo.out create "No priority, complete 2"
+./todo.out create "(A) A priority, incomplete 2"
+./todo.out create "(A) A priority, complete 2"
+./todo.out create "(B) B priority, incomplete 2"
+./todo.out create "(B) B priority, complete 2"
+sleep 1s
+./todo.out complete "No priority, complete 1"
+./todo.out complete "A priority, complete 1"
+./todo.out complete "B priority, complete 1"
+sleep 1s
+./todo.out complete "No priority, complete 2"
+./todo.out complete "A priority, complete 2"
+./todo.out complete "B priority, complete 2"
+cat todo.txt
+2026-10-23T01:29:26+0000 (A) A priority, incomplete 1
+2026-10-23T01:29:27+0000 (A) A priority, incomplete 2
+2026-10-23T01:29:26+0000 (B) B priority, incomplete 1
+2026-10-23T01:29:27+0000 (B) B priority, incomplete 2
+2026-10-23T01:29:25+0000 No priority, incomplete 1
+2026-10-23T01:29:27+0000 No priority, incomplete 2
+x 2026-10-23T01:29:28+0000 2026-10-23T01:29:26+0000 (A) A priority, complete 1
+x 2026-10-23T01:29:28+0000 2026-10-23T01:29:26+0000 (B) B priority, complete 1
+x 2026-10-23T01:29:28+0000 2026-10-23T01:29:26+0000 No priority, complete 1
+x 2026-10-23T01:29:29+0000 2026-10-23T01:29:27+0000 (A) A priority, complete 2
+x 2026-10-23T01:29:29+0000 2026-10-23T01:29:27+0000 (B) B priority, complete 2
+x 2026-10-23T01:29:29+0000 2026-10-23T01:29:27+0000 No priority, complete 2
 ```
