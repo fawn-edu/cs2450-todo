@@ -8,13 +8,13 @@
 using std::string_view, std::operator""sv;
 
 // Lol how is something like this not already in the standard library?
-static constexpr string_view strip_whitespace(string_view s) {
+static string_view strip_whitespace(string_view s) {
 	constexpr auto f = [](char c){ return !std::isspace(c); };
 	s = { s.begin(), std::ranges::find_if(s.rbegin(), s.rend(), f).base() };
 	return { std::ranges::find_if(s, f), s.end() };
 }
 
-static constexpr auto parse_priority(string_view &serialized) {
+static char parse_priority(string_view &serialized) {
 	if (!serialized.starts_with('(')) throw std::invalid_argument{"priority must begin with '('"};
 	const auto end = std::min(serialized.find_first_of(' '), serialized.size() - 1);
 	const auto raw = serialized.substr(0, end);
@@ -22,10 +22,10 @@ static constexpr auto parse_priority(string_view &serialized) {
 	if (raw.size() != "(*)"sv.size()) throw std::invalid_argument{"priority is incorrect length"};
 	if ('z' < raw[1] || raw[1] < 'A') throw std::invalid_argument{"priority must be alphabetic"};
 	serialized.remove_prefix(std::min(end + 1, serialized.size())); // +1 for trailing space immediately after end
-	return std::toupper(raw[1]);
+	return static_cast<char>(std::toupper(raw[1]));
 }
 
-static constexpr auto parse_date(string_view &serialized) {
+static auto parse_date(string_view &serialized) {
 	const auto end = std::min(serialized.find_first_of(' '), serialized.size() - 1);
 	auto raw = serialized.substr(0, end);
 	std::chrono::sys_seconds tm;

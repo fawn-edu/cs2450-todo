@@ -1,4 +1,8 @@
-src/todo.txt
+imgui.ini
+
+# Recommended CMake build and temp install directories
+src/build/
+src/target/
 
 # ======================================================================
 # This file is derivative of the C++, Linux, Windows, and macOS
