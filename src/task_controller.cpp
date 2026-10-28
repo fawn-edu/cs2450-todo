@@ -1,52 +1,39 @@
 #include "task_controller.hpp"
 
 #include <algorithm>
-#include <cassert>
+#include <cstring>
 #include <format>
 #include <fstream>
 #include <iostream>
 #include <print>
-#include <string_view>
-#include <vector>
-#include "task.hpp"
-#include "cstring"
 
-void task_controller::print_usage(const char *argv0) const {
-    std::cout << std::format(
-        "Usage:\n"
-        "\t{} list             List all tasks\n"
-        "\t{} create NAME      Create a new task named NAME\n"
-        "\t{} complete NAME    Mark task named NAME as complete\n"
-        "\t{} reopen NAME      Mark task named NAME as incomplete\n"
-        "\t{} edit NAME EDIT   Modify task named NAME with EDIT\n"
-        "\t{} delete NAME      Delete task named NAME\n"
-        "\t{} help             Show program usage\n",
-        argv0, argv0, argv0,
-        argv0, argv0, argv0,
-        argv0
-    );
-}
+bool task_controller::load_tasks()
+{
+	std::ifstream itodo{"todo.txt", std::ios::in | std::ios::app};
 
-bool task_controller::load_tasks() {
-    std::ifstream itdodo{"todo.txt", std::ios::in | std::ios::app};
+	if (!itodo.is_open()) {
+		view.show_error("couldn't open todo.txt for reading");
+		return false;
+	}
 
-    if (!itdodo.is_open()) {
-        std::cerr << "couldn't open todo.txt for reading";
-        return false;
-    }
+	auto linenr = 1u;
 
-    auto linenr = 1u;
-
-    for (std::string line; getline(itdodo, line); ++linenr) {
-        try {
-            tasks.emplace_back(task::parse(line));
-        }
-        catch (std::invalid_argument& e) {
-            std::cerr << "syntax error in todo.txt on line " << linenr << ": " << e.what() << std::endl;
-            return false;
-        }
-    }
-    return true;
+	for (std::string line; getline(itodo, line); ++linenr) {
+		try {
+			tasks.emplace_back(task::parse(line));
+		}
+		catch (std::invalid_argument& e) {
+			view.show_error(
+				std::format(
+					"syntax error in todo.txt on line {}: {}",
+					linenr,
+					e.what()
+				)
+			);
+			return false;
+		}
+	}
+	return true;
 }
 
 bool task_controller::save_tasks() {
@@ -66,20 +53,26 @@ bool task_controller::save_tasks() {
     return true;
 }
 
-int task_controller::run(int argc, const char** argv) {
-    if (!load_tasks()) {
-        return 1;
-    }
+int task_controller::run(int argc, const char** argv)
+{
+	if (!load_tasks()) {
+		return 1;
+	}
 
-    if (argc < 2) {
-        std::println(std::cerr, "no argument provided");
-        print_usage(argv[0]);
-        return 1;
-    }
+	if (argc < 2) {
+		view.show_error("no arguments provided");
+		view.show_usage(argv[0]);
+		return 1;
+	}
 
-    std::string_view cmd{argv[1]};
-    cmd.remove_prefix(std::min(cmd.find_first_not_of(" -/"), cmd.size())
-        );
+	std::string_view cmd{argv[1]};
+
+	cmd.remove_prefix(
+		std::min(
+			cmd.find_first_not_of(" -/"),
+			cmd.size()
+		)
+	);
 
 	if (cmd == "list" || cmd == "l") {
 		for (const auto &t : tasks) {
@@ -198,10 +191,10 @@ int task_controller::run(int argc, const char** argv) {
 		}
 		tasks.erase(tasks.begin() + std::distance(tasks.data(), match));
 	} else if (cmd == "help" || cmd == "h" || cmd == "?") {
-		print_usage(argv[0]);
+		view.show_usage(argv[0]);
 	} else {
 		std::println("\"{}\" is not a valid command", argv[1]);
-		print_usage(argv[0]);
+		view.show_tasks(tasks);
 	}
 
     save_tasks();
