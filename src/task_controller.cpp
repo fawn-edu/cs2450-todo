@@ -81,9 +81,7 @@ int task_controller::run(int argc, const char** argv) {
     cmd.remove_prefix(std::min(cmd.find_first_not_of(" -/"), cmd.size())
         );
 
-    if (cmd == "help" || cmd == "h" || cmd == "?") {
-        print_usage(argv[0]);
-    } else if (cmd == "list" || cmd == "l") {
+	if (cmd == "list" || cmd == "l") {
 		for (const auto &t : tasks) {
 			const auto priority = t.priority
 				? std::format("({}) ", t.priority.value())
