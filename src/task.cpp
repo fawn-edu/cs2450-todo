@@ -9,9 +9,11 @@ using std::string_view, std::operator""sv;
 
 // Lol how is something like this not already in the standard library?
 static string_view strip_whitespace(string_view s) {
-	constexpr auto f = [](char c){ return !std::isspace(c); };
-	s = { s.begin(), std::ranges::find_if(s.rbegin(), s.rend(), f).base() };
-	return { std::ranges::find_if(s, f), s.end() };
+	constexpr auto w = " \f\n\r\t\v";
+	auto first = s.find_first_not_of(w);
+	if (first == string_view::npos) return string_view{};
+	auto last = s.find_last_not_of(w);
+	return s.substr(first, 1 + last - first);
 }
 
 static char parse_priority(string_view &serialized) {
