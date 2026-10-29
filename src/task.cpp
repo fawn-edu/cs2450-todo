@@ -18,7 +18,7 @@ static string_view strip_whitespace(string_view s) {
 
 static char parse_priority(string_view &serialized) {
 	if (!serialized.starts_with('(')) throw std::invalid_argument{"priority must begin with '('"};
-	const auto end = std::min(serialized.find_first_of(' '), serialized.size() - 1);
+	const auto end = std::min(serialized.find_first_of(' '), serialized.size());
 	const auto raw = serialized.substr(0, end);
 	if (!raw.ends_with(')')) throw std::invalid_argument{"priority must end with ')'"};
 	if (raw.size() != "(*)"sv.size()) throw std::invalid_argument{"priority is incorrect length"};

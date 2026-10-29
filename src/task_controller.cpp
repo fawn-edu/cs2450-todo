@@ -1,14 +1,12 @@
-#include "task_controller.hpp"
-
 #include <algorithm>
 #include <cstring>
 #include <format>
 #include <fstream>
 #include <iostream>
 #include <print>
+#include "task_controller.hpp"
 
-bool task_controller::load_tasks()
-{
+bool task_controller::load_tasks() {
 	std::ifstream itodo{"todo.txt", std::ios::in | std::ios::app};
 
 	if (!itodo.is_open()) {
@@ -37,27 +35,24 @@ bool task_controller::load_tasks()
 }
 
 bool task_controller::save_tasks() {
-    std::ranges::sort(tasks);
-    std::ofstream todo_file{
-      "todo.txt", std::ios::out | std::ios::trunc
-    };
+	std::ranges::sort(tasks);
+	std::ofstream todo_file{
+	  "todo.txt", std::ios::out | std::ios::trunc
+	};
 
-    if (!todo_file.is_open()) {
-        std::cerr << "couldn't open todo.txt for writing\n";
-        return false;
-    }
+	if (!todo_file.is_open()) {
+		std::cerr << "couldn't open todo.txt for writing\n";
+		return false;
+	}
 
-    for (const auto& task : tasks) {
-        todo_file << std::format("{}\n", task);
-    }
-    return true;
+	for (const auto& task : tasks) {
+		todo_file << std::format("{}\n", task);
+	}
+	return true;
 }
 
-int task_controller::run(int argc, const char** argv)
-{
-	if (!load_tasks()) {
-		return 1;
-	}
+int task_controller::run(int argc, const char** argv) {
+	if (!load_tasks()) return 1;
 
 	if (argc < 2) {
 		view.show_error("no arguments provided");
@@ -67,12 +62,7 @@ int task_controller::run(int argc, const char** argv)
 
 	std::string_view cmd{argv[1]};
 
-	cmd.remove_prefix(
-		std::min(
-			cmd.find_first_not_of(" -/"),
-			cmd.size()
-		)
-	);
+	cmd.remove_prefix(std::min(cmd.find_first_not_of(" -/"), cmd.size()));
 
 	if (cmd == "list" || cmd == "l") {
 		for (const auto &t : tasks) {
@@ -197,6 +187,6 @@ int task_controller::run(int argc, const char** argv)
 		view.show_tasks(tasks);
 	}
 
-    save_tasks();
-    return 0;
+	save_tasks();
+	return 0;
 }

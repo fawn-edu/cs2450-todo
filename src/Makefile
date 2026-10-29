@@ -41,7 +41,7 @@ test-sort: todo.out
 	./todo.out complete "A priority, complete 2"
 	./todo.out complete "B priority, complete 2"
 	cat todo.txt
-todo.out: main.cpp task.cpp task.hpp
-	$(CXX) $(CXXFLAGS) -o $@ main.cpp task.cpp
+todo.out: main.cpp task.cpp task_controller.cpp task_view.cpp task.hpp task_controller.hpp task_view.hpp
+	$(CXX) $(CXXFLAGS) -o $@ main.cpp task.cpp task_controller.cpp task_view.cpp
 clean:
 	rm -f todo.out* todo.txt *.pdb

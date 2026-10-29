@@ -26,7 +26,7 @@ add_subdirectory(vendor/SDL)
 # )
 
 add_executable(${PROJECT_NAME}
-	main.cpp task.cpp
+	main.cpp task.cpp task_controller.cpp task_view.cpp
 )
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
