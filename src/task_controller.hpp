@@ -1,17 +1,14 @@
 #pragma once
 
+#include <expected>
 #include <vector>
 #include "task.hpp"
-#include "task_view.hpp"
 
-class task_controller {
-public:
-	int run(int argc, const char** argv);
-
-private:
-	std::vector<task> tasks;
-	task_view view;
-
-	bool load_tasks();
-	bool save_tasks();
+struct task_controller {
+	enum class error { NoSuchTask, AmbiguousTask };
+	task_controller(std::vector<task> &t);
+	std::expected<task*, error> search_task(std::string_view name, auto cond);
+// private:
+	// task_view view;
+	std::vector<task> &tasks;
 };

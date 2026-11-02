@@ -20,6 +20,11 @@ struct task {
 	/// line breaks or a malformed priority
 	task &edit(std::string_view serialized);
 
+	/// @brief Sets this task's completed date to the current datetime
+	/// @details This method has no effect if this task is completed
+	/// already.
+	task &complete();
+
 	/// @brief Orders two tasks based on contents
 	/// @details Orders tasks using the following criteria:
 	/// - An incomplete task is ordered before an incomplete task.

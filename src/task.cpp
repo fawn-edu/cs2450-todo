@@ -52,6 +52,12 @@ task &task::edit(string_view serialized) {
 	return *this;
 }
 
+task &task::complete() {
+	if (completed) return *this;
+	this->completed = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+	return *this;
+}
+
 task task::parse(string_view serialized) {
 	task t{};
 	if (serialized.contains("\r\n")) throw std::invalid_argument{"task contains illegal line breaks"};
