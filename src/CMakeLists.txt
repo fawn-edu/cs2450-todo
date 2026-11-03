@@ -15,7 +15,7 @@ add_subdirectory(vendor/SDL)
 
 add_executable(${PROJECT_NAME}
 	# vendor/imgui/examples/example_sdl3_sdlgpu3/main.cpp
-	main.cpp task.cpp task_controller2.cpp
+	main.cpp task.cpp task_controller.cpp
 	vendor/imgui/imgui.cpp vendor/imgui/imgui_demo.cpp
 	vendor/imgui/imgui_draw.cpp vendor/imgui/imgui_tables.cpp
 	vendor/imgui/imgui_widgets.cpp
