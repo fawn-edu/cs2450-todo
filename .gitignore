@@ -1,4 +1,10 @@
 imgui.ini
+src/todo.txt
+
+# IDE stuff
+**/.vs/
+**/.vscode/
+**/.code/
 
 # Recommended CMake build and temp install directories
 src/build/
