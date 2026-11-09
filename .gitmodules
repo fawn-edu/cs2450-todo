@@ -1,6 +1,0 @@
-[submodule "src/vendor/imgui"]
-	path = src/vendor/imgui
-	url = git@github.com:ocornut/imgui.git
-[submodule "src/vendor/SDL"]
-	path = src/vendor/SDL
-	url = git@github.com:libsdl-org/SDL
