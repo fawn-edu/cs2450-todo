@@ -2,6 +2,7 @@
 
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Hold_Browser.H>
+#include <FL/Fl_Hold_Browser.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Window.H>
 
