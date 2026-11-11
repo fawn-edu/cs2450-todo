@@ -63,3 +63,16 @@ Participants:
 ![](<Screenshot 2026-11-09 at 15-20-21 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
 
 ![](<Screenshot 2026-11-09 at 15-21-07 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-05-32 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-05-52 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-06-07 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-06-22 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-06-44 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-10 at 23-07-17 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
