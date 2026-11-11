@@ -69,37 +69,18 @@ void task_view::refresh_lists() {
 
 	for (size_t i = 0; i < tasks.size(); i++) {
 		const auto &task = tasks[i];
-		// for (const auto &task : controller_.get_tasks()) {
-		std::string text;
-
-		// Uncomment if you want to display completion status in the task list. Looks a lil funky
-		// with the priority display, so I commented it out for now.
-
-		// if (task.completed.has_value()) {
-		// 	text += "[x] ";
-		// } else {
-		// 	text += "[ ] ";
-		// }
-
-		if (task.priority.has_value()) {
-			text += "[";
-			text += task.priority.value();
-			text += "] ";
-		} else {
-			text += "[ ] ";
-		}
-
+		std::string text{task.completed ? "[x] " : "[ ] "};
+		if (task.priority) text += std::format("({}) ", *task.priority);
 		text += task.name;
-
 		all_tasks_.add(text.c_str());
-		all_task_indices_.push_back(i);
+		all_task_indices_.emplace_back(i);
 
 		if (task.completed.has_value()) {
 			complete_tasks_.add(text.c_str());
-			complete_task_indices_.push_back(i);
+			complete_task_indices_.emplace_back(i);
 		} else {
 			incomplete_tasks_.add(text.c_str());
-			incomplete_task_indices_.push_back(i);
+			incomplete_task_indices_.emplace_back(i);
 		}
 	}
 }
@@ -110,9 +91,7 @@ void task_view::new_task_cb(Fl_Widget *, void *data) {
 	// Get task name
 	const char *name = fl_input("Enter task name:");
 
-	if (name == nullptr) {
-		return;
-	}
+	if (name == nullptr) return;
 
 	std::string task_name = name;
 
@@ -124,21 +103,19 @@ void task_view::new_task_cb(Fl_Widget *, void *data) {
 	// Get optional priority
 	const char *priority = fl_input("Enter priority (A-Z), or leave blank:");
 
-	if (priority == nullptr) {
-		return;
-	}
+	if (priority == nullptr) return;
 
 	std::optional<char> task_priority = std::nullopt;
 
 	if (priority[0] != '\0') {
 		char letter = priority[0];
 
-		if (priority[1] != '\0' || letter < 'A' || letter > 'Z') {
-			fl_alert("Priority must be a single uppercase letter (A-Z).");
+		if (priority[1] != '\0' || letter < 'A' || letter > 'z') {
+			fl_alert("Priority must be a single letter (A-Z).");
 			return;
 		}
 
-		task_priority = letter;
+		task_priority = std::toupper(letter);
 	}
 
 	// Create task
@@ -226,12 +203,12 @@ void task_view::edit_task_cb(Fl_Widget *, void *data) {
 	if (priority[0] != '\0') {
 		char letter = priority[0];
 
-		if (priority[1] != '\0' || letter < 'A' || letter > 'Z') {
-			fl_alert("Priority must be a single uppercase letter (A-Z).");
+		if (priority[1] != '\0' || letter < 'A' || letter > 'z') {
+			fl_alert("Priority must be a single letter (A-Z).");
 			return;
 		}
 
-		new_priority = letter;
+		new_priority = std::toupper(letter);
 	}
 
 	// Update task through controller
