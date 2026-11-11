@@ -1,0 +1,55 @@
+name: build
+on: [push, pull_request]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux-x86:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get -yq update
+          sudo apt-get -yq install --no-install-recommends --no-install-suggests libgl1-mesa-dev
+      - name: Check out Git repository
+        uses: actions/checkout@v7
+      - name: Configure
+        run: cmake -S src -B src/build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebugInfo
+      - name: Build
+        run: cmake --build src/build --parallel 4
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          archive: false
+          path: src/build/todo
+  windows-x86:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v7
+      - name: Configure
+        run: cmake -S src -B src\build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebugInfo
+      - name: Build
+        run: cmake --build src\build --parallel 4
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          archive: false
+          path: src\build\todo.exe
+  # macos-arm:
+  #   name: macOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Check out Git repository
+  #       uses: actions/checkout@v7
+  #     - name: Configure
+  #       run: cmake -S src -B src/build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebugInfo -DCMAKE_PREFIX_PATH="/opt/homebrew/lib"
+  #     - name: Build
+  #       run: cmake --build src/build --parallel 4
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v7
+  #       with:
+  #         archive: false
+  #         path: src/build/todo
