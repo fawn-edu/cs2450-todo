@@ -1,6 +1,6 @@
+#include <format>
 #include <fstream>
-#include <iostream>
-#include <print>
+#include <cstdio>
 #include <vector>
 
 #include "task.hpp"
@@ -12,7 +12,7 @@ int main() {
 	std::vector<task> tasks{};
 	std::ifstream itodo{"todo.txt", std::ios::in | std::ios::app};
 	if (!itodo.is_open()) {
-		std::println(std::cerr, "could not open todo.txt for reading");
+		fputs("could not open todo.txt for reading\n", stderr);
 		return 1;
 	}
 	auto linenr = 1u;
@@ -20,7 +20,7 @@ int main() {
 		try {
 			tasks.emplace_back(task::parse(line));
 		} catch (std::invalid_argument &e) {
-			std::println(std::cerr, "syntax error in todo.txt on line {}: {}", linenr, e.what());
+			fprintf(stderr, "syntax error in todo.txt on line %d: %s\n", linenr, e.what());
 			return 1;
 		}
 	}
@@ -31,9 +31,9 @@ int main() {
 	// Save tasks to todo.txt
 	std::ofstream otodo{"todo.txt", std::ios::out | std::ios::trunc};
 	if (!otodo.is_open()) {
-		std::println(std::cerr, "could not open todo.txt for writing");
+		fputs("could not open todo.txt for writing\n", stderr);
 		return 1;
 	}
-	for (const auto &task : tasks) std::println(otodo, "{}", task);
+	for (const auto &task : tasks) otodo << std::format("{}\n", task);
 	return 0;
 }
