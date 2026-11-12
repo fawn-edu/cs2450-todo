@@ -169,7 +169,7 @@ This document records the manual test execution and verification of the refactor
 
 
 
-&#x20;![New task image](https://github.com/user-attachments/assets/ea2b2c0b-32d7-4d67-b3c1-266c5680aeec)
+&#x20;![New task image](https://github.com/user-attachments/assets/ae7a3747-abd8-44fc-9b14-41b9d51b53a0)
 
 
 
@@ -187,7 +187,7 @@ This document records the manual test execution and verification of the refactor
 * **Results:**
 
 
-&#x20;  ![all list image](https://github.com/user-attachments/assets/4ca5db84-e38c-4555-b1d4-acf05da76dfb)
+&#x20;  ![all list image](https://github.com/user-attachments/assets/de6a92b7-24c2-4ab5-8015-8770d6bf8995)
 
 
 
@@ -204,9 +204,9 @@ This document records the manual test execution and verification of the refactor
 * **Results:**
 
 
-&#x20;  ![test image 3.1](https://github.com/user-attachments/assets/e504fcac-c9bc-444e-a624-871eec3a0fc9)
+&#x20;  ![test image 3.1](https://github.com/user-attachments/assets/35a0a5cd-8d4a-4bad-8fe9-83fa7bf7ff48)
 
-&#x20;  ![test image 3.2](https://github.com/user-attachments/assets/d7d8a13e-138f-49c9-b131-328f3b3fe41a)
+&#x20;  ![test image 3.2](https://github.com/user-attachments/assets/d3b2608f-74f4-4bfb-98d5-01d18f98282d)
 
 
 
@@ -222,11 +222,11 @@ This document records the manual test execution and verification of the refactor
 * **Objective:** Verify that task status toggles between complete [x] and incomplete [ ].
 * **Results:**
 
-&#x20;  ![In all](https://github.com/user-attachments/assets/540259cd-b1b1-4425-ad68-497bfc903cf9)
+&#x20;  ![In all](https://github.com/user-attachments/assets/848a3e26-9833-4e48-a967-17e6c2613dd6)
 
-&#x20;  ![Incomplete](https://github.com/user-attachments/assets/1b4de41c-3cfe-44ef-a730-e772335a31e9)
+&#x20;  ![Incomplete](https://github.com/user-attachments/assets/78bf67c8-0a1f-4329-9d69-d39e8137e508)
 
-&#x20;  ![Complet](https://github.com/user-attachments/assets/23bd1b10-786c-4ff9-ae98-f7b2bc036587)
+&#x20;  ![Complet](https://github.com/user-attachments/assets/5478faf2-03d5-41a7-b924-ac65c655256d)
 
 * Status: PASS
 
@@ -238,9 +238,9 @@ This document records the manual test execution and verification of the refactor
 * **Results:**
 
 
-&#x20; ![test image 4](https://github.com/user-attachments/assets/a47e00bf-d2c3-4213-97d6-4c8e24c28872)
+&#x20; ![test image 4](https://github.com/user-attachments/assets/40349b0c-29a0-4bc2-90c6-dc9e9f9e0b1c)
 
-&#x20; ![test image 4](https://github.com/user-attachments/assets/bf2b2c47-701a-43a0-b7b2-6bb4f98c3794)
+&#x20; ![test image 4](https://github.com/user-attachments/assets/d7ca747b-0702-43ce-b335-578c98f90aaf)
 
 
 
@@ -253,11 +253,11 @@ This document records the manual test execution and verification of the refactor
 * **Results:**
 
 In this image, you can see that the first task is of type [A].
-&#x20; ![test image 5](https://github.com/user-attachments/assets/8430b80d-2a59-4750-96f9-27c48beb39e2)
+&#x20; ![test image 5](https://github.com/user-attachments/assets/f6df0aaa-8497-4b0c-a316-61da4757d7ed)
 
 
 after modification at level[Z] and its position changed.
-&#x20; ![test image 5](https://github.com/user-attachments/assets/c58590a8-f250-46f7-8d82-be189d326e37)
+&#x20; ![test image 5](https://github.com/user-attachments/assets/31710042-1da7-42e9-9cb1-ade8ae0b02a8)
 
 
 
