@@ -11,7 +11,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -yq update
-          sudo apt-get -yq install --no-install-recommends --no-install-suggests libgl1-mesa-dev
+          sudo apt-get -yq install --no-install-recommends --no-install-suggests libgl-dev
       - name: Check out Git repository
         uses: actions/checkout@v7
       - name: Configure

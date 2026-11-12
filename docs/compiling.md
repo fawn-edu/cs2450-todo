@@ -1,32 +1,15 @@
 # Compiling
 
-You will need the [CMake](https://cmake.org/download) build system, at least v3.30 or newer. Either install it from the website or from your preferred package manager.
+You will need the [CMake](https://cmake.org/download) build system, at least v3.30 or newer. [Ninja](https://ninja-build.org) is recommended as it is faster than the default options, but it is not required. Install these from their websites or from your operating system's package manager.
 
-You will also need the [FLTK](https://www.fltk.org/index.php) library. If you cannot install it from your preferred package manager (read: you are using Windows), perform the following actions in an elevated shell:
-
-## Installing FLTK
-
-```sh
-git clone git@github.com:fltk/fltk.git
-cd fltk
-cmake -Bbuild -DFLTK_BUILD_TEST=OFF
-cmake --build build --config Release --parallel 4
-cmake --install build
-cd ..
-rm -r fltk
-```
-
-You can use `--parallel N` instead, where N is the number of logical processor cores on your system. N=4 is an educated guess.
-
-# Building the todo application
-
-Once these dependencies are installed, you can build the program:
+On Debian-based Linux systems, you will also need to install the `libgl-dev` package.
+<!-- TODO: Arch-based Linux systems (libglvnd)? Others? -->
 
 ```sh
-# In the repository's root, typically `cs2450-taskmanager`,
-cd src
-cmake -Bbuild
-cmake --build build
+# In the repository root, presumably cs2450-todo/
+# If you do not have Ninja installed, omit "-G Ninja"
+cmake -S src -B src/build -DCMAKE_BUILD_TYPE=RelWithDebugInfo -G Ninja
+cmake --build src/build --parallel 4
 ```
 
-The resulting binary should be in `build/`. Exactly where depends on your platform; for Windows, it's usually at `build/Debug/todo.exe`, and for other platforms it's usually at `build/todo`.
+The resulting binary will be at `src/build/todo` or `src\build\todo.exe`.
