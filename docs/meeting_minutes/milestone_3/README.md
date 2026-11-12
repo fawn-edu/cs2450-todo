@@ -76,3 +76,14 @@ Participants:
 
 ![](<Screenshot 2026-11-10 at 23-07-17 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
 
+![](<Screenshot 2026-11-11 at 23-07-52 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-11 at 23-08-08 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-11 at 23-08-23 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-11 at 23-09-31 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-11 at 23-09-44 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<2026-11-11 Working demo using FLTK.png>)
