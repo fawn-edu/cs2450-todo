@@ -40,5 +40,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
 	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -pedantic>
 )
+target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE fltk::fltk)
