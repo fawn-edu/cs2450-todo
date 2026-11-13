@@ -1,6 +1,6 @@
 #include <cctype>
 #include <compare>
-#include <sstream>
+#include <ctime>
 #include <stdexcept>
 #include <string>
 #include "task.hpp"
@@ -30,16 +30,25 @@ static char parse_priority(string_view &serialized) {
 static auto parse_date(string_view &serialized) {
 	const auto end = std::min(serialized.find_first_of(' '), serialized.size() - 1);
 	auto raw = serialized.substr(0, end);
-	std::chrono::sys_seconds tm;
-	// XXX: EVIL EVIL EVIL!!!! AGONY!!
-	// Clang doesn't have <spanstream> yet >:(
-	// https://github.com/llvm/llvm-project/issues/105145
-	// As a result, we have to create an owning std::string copy of a
-	// std::string_view just to parse the date inside it. This is stupid
-	// and evil. Clang pls
-	// std::ispanstream{raw} >> std::chrono::parse("%FT%TZ%Z", tm);
-	std::string raw_and_evil{raw};
-	std::istringstream{raw_and_evil} >> std::chrono::parse("%FT%T%z", tm);
+	auto sraw = std::string{raw}; // XXX: sscanf needs null-terminated string
+	int tz = 0;
+	tm traw{};
+	const auto ok = sscanf(sraw.c_str(), "%d-%d-%dT%d:%d:%d%d",
+		&traw.tm_year,
+		&traw.tm_mon,
+		&traw.tm_mday,
+		&traw.tm_hour,
+		&traw.tm_min,
+		&traw.tm_sec,
+		&tz
+	);
+	if (ok != 3 && ok < 6) throw std::invalid_argument{"invalid date format (must be Y-m-d or Y-m-dTH:M:S or Y-m-dTH:M:S+Z)"};
+	traw.tm_isdst = -1;
+	traw.tm_year -= 1900;
+	traw.tm_mon -= 1;
+	std::time_t t = std::mktime(&traw);
+	if (t == -1) throw std::invalid_argument{"unrepresentable date"};
+	std::chrono::sys_seconds tm = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::from_time_t(t)) + std::chrono::hours{tz};
 	serialized.remove_prefix(std::min(end + 1, serialized.size())); // +1 for trailing space immediately after end
 	return tm;
 }
