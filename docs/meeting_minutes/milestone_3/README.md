@@ -86,4 +86,6 @@ Participants:
 
 ![](<Screenshot 2026-11-11 at 23-09-44 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
 
+![](<Screenshot 2026-11-15 at 13-01-49 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
 ![](<2026-11-11 Working demo using FLTK.png>)
