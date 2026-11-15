@@ -20,6 +20,7 @@ class task_view {
 	static void edit_task_cb(Fl_Widget *widget, void *data);
 	static void complete_task_cb(Fl_Widget *widget, void *data);
 	static void delete_task_cb(Fl_Widget *widget, void *data);
+	void show_task_dialog(std::optional<std::size_t> index = std::nullopt);
 
 	void refresh_lists();
 

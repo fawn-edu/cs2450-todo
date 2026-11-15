@@ -21,20 +21,31 @@ expected<task*, task_controller::error> task_controller::search_task(string_view
 	return match;
 }
 
-void task_controller::add_task(string_view name, std::optional<char> priority) {
+void task_controller::add_task(
+	std::string_view name,
+	std::optional<char> priority,
+	std::optional<std::chrono::sys_seconds> due
+) {
 	tasks.emplace_back(task{
 		.priority = priority,
+		.due = due,
 		.name = name.empty() ? "New task" : std::string{name},
 	});
 	std::ranges::sort(tasks);
 }
 
-void task_controller::edit_task(std::size_t index, string_view name, std::optional<char> priority) {
+void task_controller::edit_task(
+	std::size_t index,
+	std::string_view name,
+	std::optional<char> priority,
+	std::optional<std::chrono::sys_seconds> due
+) {
 	if (index >= tasks.size()) return;
+	tasks[index].priority = priority;
+	tasks[index].due = due;
 	tasks[index].name = name.empty()
 		? "New task"
 		: name;
-	tasks[index].priority = priority;
 	std::ranges::sort(tasks);
 }
 
