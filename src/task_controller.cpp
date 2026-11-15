@@ -23,8 +23,8 @@ expected<task*, task_controller::error> task_controller::search_task(string_view
 
 void task_controller::add_task(string_view name, std::optional<char> priority) {
 	tasks.emplace_back(task{
+		.priority = priority,
 		.name = name.empty() ? "New task" : std::string{name},
-		.priority = priority
 	});
 	std::ranges::sort(tasks);
 }

@@ -13,13 +13,6 @@ struct task {
 	/// @see https://github.com/todotxt/todo.txt#todotxt-format-rules
 	static task parse(std::string_view serialized);
 
-	/// @brief Edits a task with values parsed from a `string_view`
-	/// @details This function only parses information that might be
-	/// changed during editing, such as task priority and name.
-	/// @throws std::invalid_argument if @p serialized contains a
-	/// line breaks or a malformed priority
-	task &edit(std::string_view serialized);
-
 	/// @brief Sets this task's completed date to the current datetime
 	/// @details This method has no effect if this task is completed
 	/// already.
@@ -27,33 +20,45 @@ struct task {
 
 	/// @brief Orders two tasks based on contents
 	/// @details Orders tasks using the following criteria:
-	/// - An incomplete task is ordered before an incomplete task.
-	/// - Two complete tasks are ordered by their completed dates.
-	/// - A task with no priority is ordered after a task with one.
-	/// - Two tasks with priorities are ordered by their priorities.
-	/// - If none of the above apply, tasks are ordered by their created
+	/// - Incomplete tasks are ordered before completed tasks.
+	/// - Completed tasks are ordered by their completed date.
+	/// - Incomplete tasks with a due date are ordered before incomplete
+	///   tasks without one.
+	/// - Two incomplete tasks with due dates are ordered by their due
 	///   dates.
-	/// - If none of the above apply and tasks have identical created
-	///   dates, they are unordered.
-	// TODO: Need test demonstrating this works as intended
+	/// - Incomplete tasks with a priority are ordered before incomplete
+	///   tasks without one.
+	/// - Two incomplete tasks with priorities are ordered by their
+	///   priorities.
+	/// - If none of the above apply, tasks are ordered by their created
+	///   dates. Two tasks with identical created dates are unordered.
+	// TODO: Need unit test demonstrating this works as intended
 	friend std::partial_ordering operator<=>(const task &l, const task &r);
 
 	friend bool operator==(const task &l, const task &r) = default;
 
-	/// @brief The task's description
-	std::string name;
-
-	/// @brief When the task was created
-	/// @details This is set to the current time by default.
-	std::chrono::sys_seconds created = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+	/// @brief The task's priority
+	std::optional<char> priority = std::nullopt;
 
 	/// @brief When the task was completed, if it has been completed
 	/// @details This is set to `nullopt` by default, indicating the
 	/// task is not yet complete.
+	/// This time is stored as UTC.
 	std::optional<std::chrono::sys_seconds> completed = std::nullopt;
 
-	/// @brief The task's priority
-	std::optional<char> priority = std::nullopt;
+	/// @brief When the task was created
+	/// @details This is set to the current time by default.
+	/// This time is stored as UTC.
+	std::chrono::sys_seconds created = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+
+	/// @brief When the task is due, if it has a due date
+	/// @details This is set to `nullopt` by default, indicating the
+	/// task has no due date.
+	/// This time is stored as UTC.
+	std::optional<std::chrono::sys_seconds> due = std::nullopt;
+
+	/// @brief The task's description
+	std::string name;
 };
 
 template<>
@@ -67,18 +72,21 @@ struct std::formatter<task> {
 
 	/// @brief Formats a @ref task
 	static auto format(const task& t, std::format_context& ctx)  {
-		const auto *const is_completed = t.completed.has_value() ? "x " : "";
 		const auto completed_date = t.completed.has_value()
-			? std::format("{:%FT%T%z} ", t.completed.value())
+			? std::format("{:%FT%TZ} ", t.completed.value())
 			: "";
-		const auto priority = t.priority.has_value()
-			? std::format("({}) ", t.priority.value())
+		const auto priority = t.priority
+			? std::format("({}) ", *t.priority)
 			: "";
-		return std::format_to(ctx.out(), "{}{}{}{:%FT%T%z} {}",
-			is_completed,
+		const auto due_date = t.due
+			? std::format("due:{:%FT%TZ} ", *t.due)
+			: "";
+		return std::format_to(ctx.out(), "{}{}{}{:%FT%TZ} {}{}",
+			t.completed ? "x " : "",
 			priority,
 			completed_date,
 			t.created,
+			due_date,
 			t.name
 		);
 	}

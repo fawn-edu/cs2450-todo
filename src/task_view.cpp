@@ -72,6 +72,12 @@ void task_view::refresh_lists() {
 		std::string text{task.completed ? "[x] " : "[ ] "};
 		if (task.priority) text += std::format("({}) ", *task.priority);
 		text += task.name;
+		if (task.due) {
+			text += std::format(" ({}: {:%F %TZ})",
+				!task.completed && std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()) > *task.due ? "overdue" : "due",
+				*task.due // TODO: Display local time
+			);
+		}
 		all_tasks_.add(text.c_str());
 		all_task_indices_.emplace_back(i);
 
