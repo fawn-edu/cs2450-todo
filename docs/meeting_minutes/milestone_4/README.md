@@ -37,3 +37,17 @@ Participants:
 ![](<Screenshot 2026-11-15 at 13-05-37 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
 
 ## Week 2
+
+![](<Screenshot 2026-11-16 at 23-09-37 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-09-55 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-10-08 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-10-20 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-10-41 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-10-57 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-16 at 23-11-11 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
