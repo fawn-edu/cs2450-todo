@@ -9,6 +9,7 @@
 #include <FL/fl_draw.H>
 
 #include "task_view.hpp"
+#include "task_command.hpp"
 
 task_view::task_view(task_controller &controller)
 	: controller_(controller)
@@ -224,11 +225,8 @@ void task_view::show_task_dialog(std::optional<std::size_t> index) {
 			}
 		}
 
-		if (index) {
-			controller_.edit_task(*index, task_name, task_priority, task_due);
-		} else {
-			controller_.add_task(task_name, task_priority, task_due);
-		}
+		SaveTaskCommand command{TaskInput{std::string{task_name}, task_priority, task_due}, index};
+		command.execute(controller_);
 
 		refresh_lists();
 		dialog.hide();
@@ -296,7 +294,8 @@ void task_view::complete_task_cb(Fl_Widget *, void *data) {
 	bool is_completed = task.completed.has_value();
 
 	// Toggle completion status
-	view->controller_.set_completed(index.value(), !is_completed);
+	CompleteTaskCommand command{index.value(), !is_completed};
+	command.execute(view->controller_);
 
 	// Refresh the lists
 	view->refresh_lists();
@@ -323,7 +322,8 @@ void task_view::delete_task_cb(Fl_Widget *, void *data) {
 	}
 
 	// Delete the selected task
-	view->controller_.delete_task(index.value());
+	DeleteTaskCommand command{index.value()};
+	command.execute(view->controller_);
 
 	// Refresh the task lists
 	view->refresh_lists();
