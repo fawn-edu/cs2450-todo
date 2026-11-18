@@ -1,0 +1,32 @@
+=============================
+CS 2450 TASK MANAGER - TEST SUITE (21)
+=============================
+Running task tests...
+[PASS] test_task_creation
+[PASS] test_completed_task_creation
+[PASS] test_parse_basic_task
+[PASS] test_parse_task_with_all_fields
+[PASS] test_parse_completed_task
+[PASS] test_task_parsing_empty_throws
+[PASS] test_task_parsing_priority_throws
+[PASS] test_task_parsing_crlf_throws
+[PASS] test_task_ordering_completion
+[PASS] test_task_ordering_priority
+
+--- Running Integration Tests: task_controller ---
+[PASS] test_controller_add_task
+[PASS] test_controller_add_empty_name_default
+[PASS] test_controller_edit_task
+[PASS] test_controller_edit_out_of_bounds
+[PASS] test_controller_delete_task
+[PASS] test_controller_delete_out_of_bounds
+[PASS] test_controller_set_completed
+
+--- Running Integration Tests: task_command ---
+[PASS] test_save_command_create
+[PASS] test_save_command_edit
+[PASS] test_complete_command
+[PASS] test_delete_command
+=============================
+All 21 tests passed successfully!
+=============================
