@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 
 project(
 	todo
-	VERSION 4.1.0
+	VERSION 5.0.0
 	DESCRIPTION "CS 2450 Task Manager"
 	LANGUAGES CXX
 )
