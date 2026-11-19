@@ -12,7 +12,6 @@ On Debian-based Linux systems, you will also need to install the [libgl-dev](htt
 <!-- TODO: Arch-based Linux systems (libglvnd)? Others? -->
 
 ```sh
-# In the repository root, presumably cs2450-todo/
 cmake -S src -B src/build -G Ninja
 cmake --build src/build --parallel 4
 ```
@@ -24,11 +23,25 @@ The resulting binary will be at `src/build/todo` or `src\build\todo.exe`.
 Unit tests are implemented using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html), which is built in to CMake. can be built and ran as follows:
 
 ```sh
-# In the repository root, presumably cs2450-todo/
 cmake -S src -B src/build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
 cmake --build src/build --parallel 4
-cmake --build src/build --target test
+ctest --test-dir src/build -T test
 ```
+
+## Code coverage
+
+Code coverage reports require the use of either the GCC or Clang C++ compilers, as well as [lcov](https://github.com/linux-test-project/lcov). A unit test code coverage HTML report can be generated as follows:
+
+```sh
+cmake -S src -B src/build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+cmake --build src/build --clean-first --parallel 4
+ctest --test-dir src/build -T test -T coverage
+lcov --directory src/build --base-directory src --exclude src/test --exclude src/build --no-external --capture --output-file docs/tests/coverage.info
+genhtml docs/tests/coverage.info --output-directory docs/tests/coverage
+rm docs/tests/coverage.info
+```
+
+The resulting coverage report will be in `docs/tests/coverage`.
 
 ## Team Members
 

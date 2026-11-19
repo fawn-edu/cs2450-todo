@@ -1,2 +1,4 @@
 CompileFlags:
   Add: [ --language=c++, -std=c++23, -Wall, -Wextra, -pedantic ]
+Diagnostics:
+  Suppress: [ missing-designated-field-initializers ]

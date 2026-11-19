@@ -9,8 +9,7 @@ int main() {
 
 	// 1. default task creation
 	{
-		task t;
-		t.name = "Important Task";
+		task t{.name="Important Task"};
 		assert(t.name == "Important Task");
 		assert(!t.completed.has_value());
 		assert(!t.priority.has_value());
@@ -20,12 +19,10 @@ int main() {
 
 	// 2. Completed task 
 	{
-		task t;
-		t.name = "Completed Task";
+		task t{.name="Completed Task"};
 		assert(!t.completed.has_value());
 		t.complete();
 		assert(t.completed.has_value());
-
 		auto initial_completed = t.completed;
 		t.complete();
 		assert(t.completed == initial_completed);
@@ -108,28 +105,35 @@ int main() {
 
 	// 9. Ordering: incomplete task comes before completed task
 	{
-		task incomplete_task;
-		incomplete_task.name = "Incomplete";
-
-		task complete_task;
-		complete_task.name = "Completed";
+		task incomplete_task{.name = "Incomplete"};
+		task complete_task{.name = "Completed"};
 		complete_task.complete();
-
 		assert((incomplete_task <=> complete_task) == std::partial_ordering::less);
 		std::cout << "[PASS] test_task_ordering_completion\n";
 	}
 
 	// 10. Ordering: higher priority (A) comes before lower priority (B)
 	{
-		task high_prio;
-		high_prio.name = "High";
-		high_prio.priority = 'A';
-
-		task low_prio;
-		low_prio.name = "Low";
-		low_prio.priority = 'B';
-
+		task high_prio{.priority = 'A', .name = "High"};
+		task low_prio{.priority = 'B', .name = "Low"};
 		assert((high_prio <=> low_prio) == std::partial_ordering::less);
 		std::cout << "[PASS] test_task_ordering_priority\n";
+	}
+
+	// 11. Ordering: newer created dates come before older created dates
+	{
+		task old_task;
+		task new_task;
+		new_task.created += std::chrono::seconds{1};
+		assert((old_task <=> new_task) == std::partial_ordering::less);
+		std::cout << "[PASS] test_task_ordering_created\n";
+	}
+
+	// 12. Ordering: if none of the above apply, tasks are unordered
+	{
+		task a;
+		task b{a};
+		assert((a <=> b) == std::partial_ordering::unordered);
+		std::cout << "[PASS] test_task_ordering_unordered\n";
 	}
 }
