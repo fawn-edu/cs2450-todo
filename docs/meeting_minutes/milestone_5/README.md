@@ -19,3 +19,5 @@ Participants:
 ![](<Screenshot 2026-11-18 at 22-24-00 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
 
 ![](<Screenshot 2026-11-18 at 22-24-14 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
+
+![](<Screenshot 2026-11-19 at 00-26-30 Chat CS 2450 To-Do-List Project Microsoft Teams.png>)
