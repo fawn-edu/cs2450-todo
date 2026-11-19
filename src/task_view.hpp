@@ -16,7 +16,6 @@ class task_view {
 
   private:
 	static void new_task_cb(Fl_Widget *widget, void *data);
-	static void selection_cb(Fl_Widget *widget, void *data);
 	static void edit_task_cb(Fl_Widget *widget, void *data);
 	static void complete_task_cb(Fl_Widget *widget, void *data);
 	static void delete_task_cb(Fl_Widget *widget, void *data);

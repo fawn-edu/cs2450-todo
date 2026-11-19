@@ -28,9 +28,6 @@ task_view::task_view(task_controller &controller)
 	new_task_button_.callback(new_task_cb, this);
 	edit_task_button_.callback(edit_task_cb, this);
 	complete_task_button_.callback(complete_task_cb, this);
-	all_tasks_.callback(selection_cb, this);
-	incomplete_tasks_.callback(selection_cb, this);
-	complete_tasks_.callback(selection_cb, this);
 	delete_task_button_.callback(delete_task_cb, this);
 
 	// Move each browser into its corresponding tab
@@ -257,12 +254,6 @@ std::optional<size_t> task_view::selected_task_index() {
 	}
 
 	return (*indices)[row - 1];
-}
-
-void task_view::selection_cb(Fl_Widget *, void *data) {
-	auto *view = static_cast<task_view *>(data);
-
-	auto index = view->selected_task_index();
 }
 
 void task_view::edit_task_cb(Fl_Widget *, void *data) {
