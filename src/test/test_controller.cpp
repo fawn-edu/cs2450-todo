@@ -2,10 +2,10 @@
 #include <iostream>
 #include <vector>
 #include <optional>
-#include "task.hpp"
-#include "task_controller.hpp"
+#include "../task.hpp"
+#include "../task_controller.hpp"
 
-void run_controller_tests() {
+int main() {
 	std::cout << "\n--- Running Integration Tests: task_controller ---\n";
 
 	//11. Adding a valid task

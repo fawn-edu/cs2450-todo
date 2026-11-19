@@ -2,9 +2,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include "task.hpp"
+#include "../task.hpp"
 
-void run_task_tests() {
+int main() {
 	std::cout << "Running task tests...\n";
 
 	// 1. default task creation

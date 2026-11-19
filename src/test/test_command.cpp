@@ -1,11 +1,11 @@
 #include <cassert>
 #include <iostream>
 #include <vector>
-#include "task.hpp"
-#include "task_controller.hpp"
-#include "task_command.hpp"
+#include "../task.hpp"
+#include "../task_controller.hpp"
+#include "../task_command.hpp"
 
-void run_command_tests() {
+int main() {
 	std::cout << "\n--- Running Integration Tests: task_command ---\n";
 
 	//18. SaveTaskCommand creates a new task when no index is provided

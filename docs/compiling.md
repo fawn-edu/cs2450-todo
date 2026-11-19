@@ -13,3 +13,15 @@ cmake --build src/build --parallel 4
 ```
 
 The resulting binary will be at `src/build/todo` or `src\build\todo.exe`.
+
+## Tests
+
+Unit tests can be built and ran as follows:
+
+```sh
+# In the repository root, presumably cs2450-todo/
+# If you do not have Ninja installed, omit "-G Ninja"
+cmake -S src -B src/build -DCMAKE_BUILD_TYPE=RelWithDebugInfo -G Ninja -DBUILD_TESTING=ON
+cmake --build src/build --parallel 4
+cmake --build src/build --target test
+```
